@@ -6,13 +6,15 @@ if (menuButton && navLinks) {
     const isOpen = menuButton.getAttribute("aria-expanded") === "true";
     menuButton.setAttribute("aria-expanded", String(!isOpen));
     navLinks.classList.toggle("mobile-open", !isOpen);
-    menuButton.textContent = isOpen ? "☰" : "×";
+    menuButton.classList.toggle("is-open", !isOpen);
+    menuButton.setAttribute("aria-label", !isOpen ? "Close menu" : "Open menu");
   });
   navLinks.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       navLinks.classList.remove("mobile-open");
       menuButton.setAttribute("aria-expanded", "false");
-      menuButton.textContent = "☰";
+      menuButton.classList.remove("is-open");
+      menuButton.setAttribute("aria-label", "Open menu");
     });
   });
 }
@@ -57,7 +59,7 @@ function setPeriod(period) {
   area?.setAttribute("d", `${selection.path} L720 310H0Z`);
   if (months) months.innerHTML = selection.labels.map((label) => `<span>${label}</span>`).join("");
   if (indexValue) indexValue.innerHTML = `${selection.value.split(".")[0]}<span>.${selection.value.split(".")[1]}</span>`;
-  if (indexChange) indexChange.textContent = `↗ ${selection.change}`;
+  if (indexChange) indexChange.innerHTML = `<svg class="arrow-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7" /></svg> ${selection.change}`;
   timeButtons.forEach((button) => {
     const active = button.dataset.period === period;
     button.classList.toggle("active", active);
@@ -119,7 +121,7 @@ function sprinkleConfetti(event) {
     const distance = 48 + Math.random() * 105;
     const piece = document.createElement("span");
     piece.className = `confetti-piece ${shapes[Math.floor(Math.random() * shapes.length)]}`;
-    if (piece.classList.contains("star")) piece.textContent = "✦";
+    if (piece.classList.contains("star")) piece.innerHTML = '<svg class="confetti-star-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 1.5 2.9 7 7.6 3.5-7.6 3.5-2.9 7-2.9-7L1.5 12l7.6-3.5z"/></svg>';
     piece.style.left = `${event.clientX}px`;
     piece.style.top = `${event.clientY}px`;
     piece.style.setProperty("--confetti-color", confettiColors[Math.floor(Math.random() * confettiColors.length)]);
